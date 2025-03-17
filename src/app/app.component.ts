@@ -1,11 +1,14 @@
+// src/app/app.component.ts
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  template: `
+  <app-header></app-header>
+  <app-map></app-map>
+    <!-- <app-dashboard></app-dashboard> -->
+  `,
   standalone: false,
-  styleUrl: './app.component.css'
+  styleUrl: 'app.component.css'
 })
-export class AppComponent {
-  title = 'tracker-vessel-flight';
-}
+export class AppComponent {}
