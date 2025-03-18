@@ -1,23 +1,23 @@
 import { Component } from '@angular/core';
+import { MapSearchService } from '../../services/map-search.service';
 
 @Component({
   selector: 'app-header',
   standalone: false,
   template: `<header class="app-header">
   <div class="header-left">
-
     <nav class="main-nav">
       <ul>
-      <li>
-          <mat-icon>map</mat-icon>
-          <a href="#">Bản đồ</a>
+      <li (click)="toggleMapSearch()">
+          <mat-icon >map</mat-icon>
+          <a>Bản đồ</a>
           <!-- Example dropdown -->
         </li>
         <li>
           <mat-icon>monitoring</mat-icon>
           <a href="#">Giám sát báo chí</a>
           <!-- Example dropdown -->
-    
+
         </li>
         <li>
          <mat-icon>newspaper</mat-icon>
@@ -37,7 +37,7 @@ import { Component } from '@angular/core';
         </li>
         <li>
           <a href="#">Quản lý chung</a>
-        
+
         </li>
         <li><a href="#">Về sản phẩm</a></li>
       </ul>
@@ -57,12 +57,17 @@ import { Component } from '@angular/core';
       <span class="badge">2</span>
     </div>
     <!-- Username -->
-   
+
   </div>
 </header>
 `,
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  constructor(private mapSearchService: MapSearchService) {}
 
+  toggleMapSearch() {
+    this.mapSearchService.toggleSearchPanel();
+    console.log('Toggle map search');
+  }
 }

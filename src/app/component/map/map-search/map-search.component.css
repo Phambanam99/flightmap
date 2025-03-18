@@ -1,0 +1,80 @@
+/* Basic panel styling */
+.map-panel {
+  position: absolute;
+  left: 0;   /* or right: 0 if you prefer a right-side panel */
+  width: 18rem;
+  height: calc(100% - 50px);
+  background: #fff;
+  padding: 0.2rex;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+.lable-map{
+  text-align: center;
+  font-size: 1.3rem;
+  background-color: #EFEFEF;
+  margin: 0 0  0.5rem 0;
+  padding: 0.5rem;
+}
+.tabs {
+  display: flex;
+  margin: 10px;
+}
+.map-panel > .tab-content {
+ padding: 0 0.8rem;
+}
+.tab-btn {
+  flex: 1;
+  padding: 8px;
+  background: #eee;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  &.active {
+    background: #1976d2;
+    color: white;
+  }
+}
+
+.section-title {
+  font-weight: 400;
+  margin-top:0.5rem;
+}
+.filter-map-search {
+  width: 100%;
+
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow-y: hidden;
+  height:2rem;
+  text-align: left;
+  margin-bottom: 0;
+
+}
+.filter-group,
+.date-filter {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.date-filter-input{
+  display: flex;
+  gap: 4px;
+  text-align: center;
+  input{
+    background-color: #EFEFEF;
+  }
+}
+.button-row {
+  margin-top: 1rem;
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  cursor: pointer;
+}
+
+

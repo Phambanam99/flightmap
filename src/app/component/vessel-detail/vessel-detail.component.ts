@@ -22,7 +22,8 @@ import { Vessel } from '../../models/vessel.model';
 
       <!-- Tabs for different sections: Chung, Quỹ đạo, Nhật ký, Thống kê -->
       <mat-tab-group >
-        <mat-tab label="Chung"  class="vessel-tab">
+        <mat-tab label="Chung"  class="
+        ">
           <div class="tab-content">
             <!-- Vessel Image -->
             <img [src]="vessel.imageUrl" alt="Vessel" class="vessel-image" />
@@ -37,53 +38,53 @@ import { Vessel } from '../../models/vessel.model';
                 <div class="info-label">Tên</div>
                 <div class="info-value">{{ vessel.name }}</div>
               </div>
-             
-              <div class="vessel-info"> 
+
+              <div class="vessel-info">
                 <div class="info-label">Tên khác</div>
                 <div class="info-value">{{ vessel.alternativeName }}</div>
               </div>
-              <div class="vessel-info"> 
+              <div class="vessel-info">
                 <div class="info-label">Hô hiệu/IMO</div>
                 <div class="info-value">{{ vessel.callSign }}</div>
               </div>
-        
-              <div class="vessel-info"> 
+
+              <div class="vessel-info">
                 <div class="info-label">Quốc gia</div>
                 <div class="info-value">{{ vessel.country }}</div>
               </div>
-              <div class="vessel-info"> 
+              <div class="vessel-info">
                 <div class="info-label">Thời gian</div>
                 <div class="info-value">{{ vessel.time }}</div>
             </div>
-      
-              <div class="vessel-info"> 
+
+              <div class="vessel-info">
                 <div class="info-label">Tọa độ</div>
                 <div class="info-value">{{ vessel.coordinates }}</div>
-              </div> 
-             
-              <div class="vessel-info"> 
+              </div>
+
+              <div class="vessel-info">
                 <div class="info-label">Hướng/Tốc độ</div>
                 <div class="info-value">{{ vessel.speed }}</div>
               </div>
-              <div class="vessel-info"> 
+              <div class="vessel-info">
                 <div class="info-label">Trạng thái</div>
                 <div class="info-value">{{ vessel.status }}</div>
               </div>
-           
-              <div class="vessel-info"> 
+
+              <div class="vessel-info">
                 <div class="info-label">Loại tàu</div>
                 <div class="info-value">{{ vessel.type }}</div>
               </div>
-            
-              <div class="vessel-info"> 
+
+              <div class="vessel-info">
                 <div class="info-label">Trạng thái xác thực</div>
                 <div class="info-value">{{ vessel.confirmStatus }}</div>
               </div>
-              <div class="vessel-info"> 
+              <div class="vessel-info">
                 <div class="info-label">Thời gian lịch sử</div>
                 <div class="info-value">{{ vessel.historicalTime }}</div>
               </div>
-            
+
             </mat-list>
 
             <!-- Action Buttons -->
@@ -122,7 +123,7 @@ import { Vessel } from '../../models/vessel.model';
   </div>
   `,
   styleUrl: './vessel-detail.component.css',
- 
+
 })
 export class VesselDetailComponent {
   @Input() item: Vessel = {

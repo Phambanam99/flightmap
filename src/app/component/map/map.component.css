@@ -6,8 +6,23 @@
   left: 0;
 }
 .map-container {
+  position: relative;
   height: 100vh;
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+.map {
+  height: 100%;
+}
+.map-search {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  background: white;
+  height: 100vh;
+  width: 17rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }

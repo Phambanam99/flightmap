@@ -7,15 +7,19 @@ import { Flight } from '../../models/flight.model';
 import { VesselDetailComponent } from '../../component/vessel-detail/vessel-detail.component';
 import { FlightDetailComponent } from '../flight-detail/flight-detail.component';
 import { min } from 'rxjs';
+import { MapSearchService } from '../../services/map-search.service';
 
 @Component({
   selector: 'app-map',
   template: `
-    <div class="map-container"
-         leaflet
-         [leafletOptions]="options"
-         [leafletLayers]="layers"
-         (leafletZoomend)="onZoomEnd($event)">
+    <div class="map-container">
+      <app-map-search class="map-search" *ngIf="showSearchPanel"></app-map-search>
+      <div class="map"
+           leaflet
+           [leafletOptions]="options"
+           [leafletLayers]="layers"
+           (leafletZoomend)="onZoomEnd($event)">
+      </div>
     </div>
   `,
   standalone: false,
@@ -23,6 +27,7 @@ import { min } from 'rxjs';
 })
 export class MapComponent implements OnInit {
   @Input() filter: 'vessels' | 'flights' | null = null;
+  showSearchPanel = false;
 
   options = {
     layers: [
@@ -49,7 +54,12 @@ export class MapComponent implements OnInit {
   selectedCircle: Circle | null = null;
   currentZoom: number = 6;
 
-  constructor(private wsService: WebSocketService, private resolver: ComponentFactoryResolver, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private wsService: WebSocketService,
+    private resolver: ComponentFactoryResolver,
+    private viewContainerRef: ViewContainerRef,
+    private mapSearchService: MapSearchService
+  ) {}
 
   ngOnInit() {
     this.wsService.getData().subscribe(data => {
@@ -63,6 +73,14 @@ export class MapComponent implements OnInit {
         // Add similar methods for airports and clouds if needed
       }
     });
+
+    this.mapSearchService.showSearchPanel$.subscribe(
+
+      show =>{
+        console.log('Search panel visibility changed:', show);
+        this.showSearchPanel = show;
+      }
+    );
   }
 
   getIconSize(zoom: number) {
@@ -175,11 +193,6 @@ export class MapComponent implements OnInit {
 
   updateLayers() {
     this.layers = [...this.vesselLayers, ...this.flightLayers, ...this.airportLayers, ...this.cloudLayers];
-
-    // // Reapply popup if an item is selected
-    // if (this.selectedItem && this.selectedMarker) {
-    //   this.selectedMarker.bindPopup(this.createPopupContentVessel(this.selectedItem)).openPopup();
-    // }
   }
 
   createPopupContentVessel(item: Vessel ): HTMLElement {
