@@ -74,8 +74,7 @@ export class MapComponent implements OnInit {
   flightMarkers: Map<string, Marker> = new Map();
   selectedCircle: Circle | null = null;
   currentZoom: number = 6;
-  private map: L.Map;
-  private apiKey = '6b33f16dae3587630c60ee15fcb0b4e4'; // Replace with your actual API key
+  private map: L.Map; // Replace with your actual API key
 
   showWeather = false;
   selectedWeatherLayer = 'none';

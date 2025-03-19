@@ -2,7 +2,7 @@
   position: fixed;
   top: 90px;
   right: 10px;
-  width: 300px;
+  width: 25%;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -48,7 +48,7 @@
 }
 
 .vessel-header {
-  background-color: #4caf50; /* Green header color */
+  background-color: #1f4db7; /* Green header color */
   color: #fff;
   display: flex;
   justify-content: space-between;
