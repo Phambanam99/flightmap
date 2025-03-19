@@ -98,3 +98,17 @@
   font-size: 0.75em;
 }
 
+.weather-controls {
+  margin-top: 10px;
+}
+
+.weather-controls mat-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weather-controls mat-radio-button {
+  margin: 5px 0;
+}
+

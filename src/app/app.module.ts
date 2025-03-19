@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,16 +12,19 @@ import { FlightComponent } from './components/flight/flight.component';
 import { VesselDetailComponent } from './components/vessel-detail/vessel-detail.component';
 import { FlightDetailComponent } from './components/flight-detail/flight-detail.component';
 import { HeaderComponent } from './components/header/header.component';
-import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MapSearchComponent } from './components/map/map-search/map-search.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MultiSelectDropdownComponent } from './components/multi-select-dropdown/multi-select-dropdown.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     MapComponent,
@@ -50,9 +53,10 @@ import { MultiSelectDropdownComponent } from './components/multi-select-dropdown
     ReactiveFormsModule,
     MatSelectModule,
     MatFormFieldModule,
-  
-],
+    MatRadioModule,
+    HttpClientModule,
+  ],
   bootstrap: [AppComponent],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

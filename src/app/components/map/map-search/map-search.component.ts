@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MapComponent } from '../map.component';
+
 @Component({
   selector: 'app-map-search',
   standalone: false,
@@ -190,6 +192,46 @@ import { FormControl } from '@angular/forms';
             </div>
           </div>
         </div>
+
+        <!-- Add this new weather section before closing div.tabs -->
+        <div class="tab-btns" [class.active]="activeTab === 'weather'">
+          <button
+            class="tab-btn"
+            [class.active]="activeTab === 'weather'"
+            (click)="activeTab = 'weather'"
+          >
+            <mat-icon>cloud</mat-icon>
+            <span>Thời tiết</span>
+          </button>
+          <div class="icon-container">
+            <mat-icon>
+              {{
+                activeTab === 'weather'
+                  ? 'keyboard_arrow_up'
+                  : 'keyboard_arrow_down'
+              }}
+            </mat-icon>
+          </div>
+        </div>
+
+        <div *ngIf="activeTab === 'weather'">
+          <div class="tab-content">
+            <div class="section-title">Hiển thị lớp thời tiết</div>
+            <div class="weather-controls">
+              <mat-radio-group
+                [(ngModel)]="selectedWeather"
+                (change)="onWeatherChange($event)"
+              >
+                <mat-radio-button
+                  *ngFor="let type of weatherTypes"
+                  [value]="type.value"
+                >
+                  {{ type.label }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   `,
@@ -204,13 +246,35 @@ export class MapSearchComponent {
     | 'all-boats'
     | 'traking-boats'
     | 'boats-from-satellites'
-    | 'flight' = '';
+    | 'flight'
+    | 'weather' = '';
   optionTypeOfBoats = ['haha', 'heheh'];
+  weatherTypes = [
+    { value: 'none', label: 'Không hiển thị' },
+    { value: 'wind_new', label: 'Gió' },
+    { value: 'wave_new', label: 'Sóng biển' },
+  ];
+  selectedWeather: string = 'none';
+
+  constructor(private mapComponent: MapComponent) {}
+
   applyFilter() {
     // Your filter logic
   }
 
   saveFilter() {
     // Your save logic
+  }
+
+  onWeatherChange(event: any) {
+    const weatherType = event.value;
+    if (weatherType === 'none') {
+      this.mapComponent.showWeather = false;
+      this.mapComponent.toggleWeather();
+    } else {
+      this.mapComponent.showWeather = true;
+      this.mapComponent.selectedWeatherLayer = weatherType;
+      this.mapComponent.toggleWeather();
+    }
   }
 }
