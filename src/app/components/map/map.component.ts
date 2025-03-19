@@ -4,7 +4,7 @@ import { latLng, tileLayer, marker, icon, Marker, Circle, circle } from 'leaflet
 import { WebSocketService } from '../../web-socket.service';
 import { Vessel } from '../../models/vessel.model';
 import { Flight } from '../../models/flight.model';
-import { VesselDetailComponent } from '../../component/vessel-detail/vessel-detail.component';
+import { VesselDetailComponent } from '../vessel-detail/vessel-detail.component';
 import { FlightDetailComponent } from '../flight-detail/flight-detail.component';
 import { min } from 'rxjs';
 import { MapSearchService } from '../../services/map-search.service';

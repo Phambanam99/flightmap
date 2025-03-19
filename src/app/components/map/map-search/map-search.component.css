@@ -2,7 +2,7 @@
 .map-panel {
   position: absolute;
   left: 0;   /* or right: 0 if you prefer a right-side panel */
-  width: 18rem;
+  width: 100%;
   height: calc(100% - 50px);
   background: #fff;
   padding: 0.2rex;
@@ -12,41 +12,55 @@
 .lable-map{
   text-align: center;
   font-size: 1.3rem;
-  background-color: #EFEFEF;
+  background-color: #E0E2EC;
   margin: 0 0  0.5rem 0;
   padding: 0.5rem;
 }
 .tabs {
   display: flex;
-  margin: 10px;
+  flex-direction: column;
+  width: 100%;
 }
-.map-panel > .tab-content {
- padding: 0 0.8rem;
+.tab-content {
+ padding: 1rem 0.8rem;
+ border: 1px dotted #000;
+ border-radius: 5px;
+}
+.tab-btns{
+  display: flex;
+  width: calc(100%);
+  justify-content:space-between;
+  align-items: center;
+  &.active {
+    color: #1976d2 ;
+  }
 }
 .tab-btn {
-  flex: 1;
-  padding: 8px;
-  background: #eee;
-  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: none;
   cursor: pointer;
-  border-radius: 4px;
-  text-align: center;
   font-weight: bold;
+  font-size: large;
   &.active {
-    background: #1976d2;
-    color: white;
+    color: #1976d2;
   }
 }
 
+.icon-container {
+  /* This ensures the icon is aligned to the right of the container */
+  text-align: right;
+}
 .section-title {
   font-weight: 400;
   margin-top:0.5rem;
 }
 .filter-map-search {
   width: 100%;
-
-  border: 1px solid #ccc;
+  border: 1px solid #E0E2EC;
   border-radius: 4px;
+  background-color: #E0E2EC;
   overflow-y: hidden;
   height:2rem;
   text-align: left;
@@ -64,17 +78,23 @@
   gap: 4px;
   text-align: center;
   input{
-    background-color: #EFEFEF;
+    background-color: #E0E2EC;
   }
 }
 .button-row {
   margin-top: 1rem;
   display: flex;
   gap: 8px;
+  align-items: center;
+  a{
+    color: #1976d2;
+    cursor: pointer;
+  }
 }
 
-button {
-  cursor: pointer;
-}
 
+.example-additional-selection.mat-mdc-select-panel{
+  opacity: 0.75;
+  font-size: 0.75em;
+}
 

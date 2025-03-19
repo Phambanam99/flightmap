@@ -1,0 +1,9 @@
+<div class="dropdown">
+  <button class="dropdown-btn" (click)="toggleDropdown($event)">{{ buttonText }}</button>
+  <div class="dropdown-content" [class.show]="dropdownOpen">
+    <label *ngFor="let option of options">
+      <!-- Stop propagation so clicking on a checkbox doesn't close the dropdown -->
+      <input type="checkbox" [value]="option" (click)="$event.stopPropagation()" (change)="onOptionSelected($event, option)"> {{ option }}
+    </label>
+  </div>
+</div>
