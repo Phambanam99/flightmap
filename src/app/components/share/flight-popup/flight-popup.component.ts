@@ -50,7 +50,7 @@ import { EventEmitter, Output } from '@angular/core';
                   <mat-icon>visibility</mat-icon>Chi tiết
                 </button>
                 <button mat-raised-button>
-                  <mat-icon>star</mat-icon>Theo dõi
+                  <mat-icon>star_border</mat-icon>Theo dõi
                 </button>
                 <button mat-raised-button>
                   <mat-icon>sticky_note_2</mat-icon>Nhật ký

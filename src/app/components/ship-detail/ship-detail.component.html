@@ -1,6 +1,5 @@
 <!-- Tabs -->
 
-
 <div class="ship-detail-container">
   <!-- Thông tin chung -->
   <mat-card class="ship-info-card">
@@ -12,11 +11,25 @@
         <button mat-button><mat-icon>group</mat-icon>Nhóm</button>
         <button mat-button><mat-icon>description</mat-icon>File kml</button>
       </div>
-      </div>
+    </div>
     <mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedIndexChange)="onTabChange($event)">
       <mat-tab *ngFor="let tabName of tabs" [label]="tabName">
-        <!-- Nội dung tab (nếu mỗi tab có nội dung riêng) -->
-        <!-- Hiện tại để trống -->
+        <ng-container *ngIf="selectedTabIndex === 0">
+          <!-- Nội dung cho tab Hệ thống -->
+          <div>Content for Hệ thống</div>
+        </ng-container>
+        <ng-container *ngIf="selectedTabIndex === 1">
+          <!-- Nội dung cho tab Hifleet -->
+          <div>Content for Hifleet</div>
+        </ng-container>
+        <ng-container *ngIf="selectedTabIndex === 2">
+          <!-- Nội dung cho tab Marinetraffic -->
+          <div>Content for Marinetraffic</div>
+        </ng-container>
+        <ng-container *ngIf="selectedTabIndex === 3">
+          <!-- Nội dung cho tab Vesselfinder -->
+          <div>Content for Vesselfinder</div>
+        </ng-container>
       </mat-tab>
     </mat-tab-group>
     <div class="ship-info-body">
@@ -46,7 +59,6 @@
         </div>
       </div>
     </div>
-
   </mat-card>
 
   <!-- Vị trí mới nhất -->

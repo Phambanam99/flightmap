@@ -90,6 +90,9 @@ export class ShipDetailComponent implements AfterViewInit {
     'departureTime',
   ];
 
+  private map: L.Map;
+  private marker: L.Marker;
+
   // Chuyển tab
   onTabChange(index: number) {
     this.selectedTabIndex = index;
@@ -100,22 +103,51 @@ export class ShipDetailComponent implements AfterViewInit {
   }
 
   private initMap(): void {
-    const map = L.map('map').setView([this.ship.lat, this.ship.lng], 13);
+    this.map = L.map('map', {
+      attributionControl: false,
+    }).setView([this.ship.lat, this.ship.lng], 13);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(
+      this.map
+    );
+
+    this.updateMarker();
+
+    this.map.on('zoomend', () => {
+      this.updateMarker();
+    });
+  }
+
+  private updateMarker(): void {
+    const zoom = this.map.getZoom();
+    const iconSize = this.getIconSize(zoom);
 
     const shipIcon = L.icon({
       iconUrl: 'assets/vessel.png', // Replace with your ship icon URL
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
+      iconSize: [iconSize, iconSize],
+      iconAnchor: [iconSize / 2, iconSize],
     });
 
-    const marker = L.marker([this.ship.lat, this.ship.lng], {
-      icon: shipIcon,
-    }).addTo(map) as any;
-    (marker as any).setRotationAngle(this.ship.heading); // Góc xoay: 50 độ
-    marker.setRotationOrigin('center center');
+    if (this.marker) {
+      this.marker.setIcon(shipIcon);
+      this.marker.setLatLng([this.ship.lat, this.ship.lng]);
+    } else {
+      this.marker = L.marker([this.ship.lat, this.ship.lng], {
+        icon: shipIcon,
+      }).addTo(this.map) as any;
+      (this.marker as any).setRotationAngle(this.ship.heading);
+      (this.marker as any).setRotationOrigin('center center');
+    }
+  }
+
+  private getIconSize(zoom: number): number {
+    const baseSize = 32;
+    const minSize = 4;
+    const maxSize = 64;
+
+    const scaleFactor = Math.pow(1.2, zoom - 13);
+    const newSize = baseSize * scaleFactor;
+
+    return Math.min(Math.max(newSize, minSize), maxSize);
   }
 }
