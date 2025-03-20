@@ -18,21 +18,32 @@ import {
 import { WebSocketService } from '../../services/web-socket.service';
 import { Vessel } from '../../models/vessel.model';
 import { Flight } from '../../models/flight.model';
-import { VesselDetailComponent } from '../vessel-detail/vessel-detail.component';
-import { FlightDetailComponent } from '../flight-detail/flight-detail.component';
+import { VesselPopupComponent } from '../share/vessel-popup/vessel-popup.component';
+import { FlightDetailComponent } from '../share/flight-popup/flight-popup.component';
 import { min } from 'rxjs';
 import { MapSearchService } from '../../services/map-search.service';
 import * as L from 'leaflet';
 import { WeatherDataService } from '../../services/weather.service';
 import 'leaflet-velocity';
+import { trigger, style, animate, transition } from '@angular/animations';
+
 @Component({
   selector: 'app-map',
+  standalone: false,
   template: `
     <div class="map-container">
       <app-map-search
         class="map-search"
         *ngIf="showSearchPanel"
+        [@slideInOut]
       ></app-map-search>
+      <div
+        class="expend-search-button"
+        (click)="toggleMapSearch()"
+        *ngIf="!showSearchPanel"
+      >
+        <mat-icon>menu</mat-icon>
+      </div>
       <div
         class="map"
         leaflet
@@ -43,11 +54,21 @@ import 'leaflet-velocity';
       ></div>
     </div>
   `,
-  standalone: false,
   styleUrls: ['./map.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(-100%)' }),
+        animate('300ms ease-in', style({ transform: 'translateX(0%)' })),
+      ]),
+      transition(':leave', [
+        animate('300ms ease-out', style({ transform: 'translateX(-100%)' })),
+      ]),
+    ]),
+  ],
 })
 export class MapComponent implements OnInit {
-  @Input() filter: 'vessels' | 'flights' | null = null;
+  // @Input() filter: 'vessels' | 'flights' | null = null;
   showSearchPanel = false;
   unitspeedvalue: string = 'm/s';
   options = {
@@ -89,15 +110,9 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.wsService.getData().subscribe((data) => {
-      if (this.filter === 'vessels') {
-        this.updateVesselLayers(data.vessels);
-      } else if (this.filter === 'flights') {
-        this.updateFlightLayers(data.flights);
-      } else {
-        this.updateVesselLayers(data.vessels);
-        this.updateFlightLayers(data.flights);
-        // Add similar methods for airports and clouds if needed
-      }
+      this.updateVesselLayers(data.vessels);
+      this.updateFlightLayers(data.flights);
+      // Add similar methods for airports and clouds if needed
     });
 
     this.mapSearchService.showSearchPanel$.subscribe((show) => {
@@ -228,11 +243,9 @@ export class MapComponent implements OnInit {
 
   createPopupContentVessel(item: Vessel): HTMLElement {
     this.viewContainerRef.clear();
-    const componentRef = this.viewContainerRef.createComponent(
-      VesselDetailComponent
-    );
+    const componentRef =
+      this.viewContainerRef.createComponent(VesselPopupComponent);
     componentRef.instance.item = item;
-    console.log(componentRef.instance.item);
     return componentRef.location.nativeElement;
   }
   createPopupContentFlight(item: Flight): HTMLElement {
@@ -326,5 +339,10 @@ export class MapComponent implements OnInit {
         })
         .addTo(this.map);
     });
+  }
+
+  toggleMapSearch() {
+    this.mapSearchService.toggleSearchPanel();
+    console.log('Toggle map search');
   }
 }

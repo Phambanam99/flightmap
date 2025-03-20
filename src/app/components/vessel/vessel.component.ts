@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   standalone: false,
   template: `
     <h2>Vessels</h2>
-    <app-map [filter]="'vessels'"></app-map>
   `,
   styles: [],
 

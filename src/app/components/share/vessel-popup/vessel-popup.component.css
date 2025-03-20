@@ -2,7 +2,7 @@
   position: fixed;
   top: 90px;
   right: 10px;
-  width: 25%;
+  width: 400px;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -80,7 +80,7 @@
   border-radius: 5px;
   margin-bottom: 16px;
   object-fit: cover;
-  background-color: darkcyan;
+  background-color: #F0F2FC;
 }
 
 .info-label {
@@ -104,3 +104,4 @@
   padding: 0;
   margin: -24px;
 }
+

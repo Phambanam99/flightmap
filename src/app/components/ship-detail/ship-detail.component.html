@@ -1,0 +1,109 @@
+<!-- Tabs -->
+
+
+<div class="ship-detail-container">
+  <!-- Thông tin chung -->
+  <mat-card class="ship-info-card">
+    <div class="header-detail-ship">
+      <span>Thông tin chung</span>
+      <div class="ship-actions">
+        <button mat-button color="accent"><mat-icon>star_border</mat-icon>Hủy Theo dõi</button>
+        <button mat-button><mat-icon>info</mat-icon>Cập nhật</button>
+        <button mat-button><mat-icon>group</mat-icon>Nhóm</button>
+        <button mat-button><mat-icon>description</mat-icon>File kml</button>
+      </div>
+      </div>
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedIndexChange)="onTabChange($event)">
+      <mat-tab *ngFor="let tabName of tabs" [label]="tabName">
+        <!-- Nội dung tab (nếu mỗi tab có nội dung riêng) -->
+        <!-- Hiện tại để trống -->
+      </mat-tab>
+    </mat-tab-group>
+    <div class="ship-info-body">
+      <div class="ship-image">
+        <img [src]="ship.imageUrl" alt="ship" />
+      </div>
+      <div class="ship-info-text">
+        <div class="ship-info-text-left">
+          <div class="row"><strong>MMSI:</strong> {{ ship.mmsi }}</div>
+          <div class="row"><strong>Tên khác:</strong> {{ ship.diffName }}</div>
+          <div class="row"><strong>IMO:</strong> {{ ship.imo }}</div>
+          <div class="row"><strong>Quốc gia:</strong> {{ ship.country }}</div>
+          <div class="row"><strong>Trạng thái xác thực:</strong> {{ ship.status }}</div>
+          <div class="row"><strong>Chiều rộng (m):</strong> {{ ship.width }}</div>
+          <div class="row"><strong>Tổng dung tích:</strong> {{ ship.grossTonnage }}</div>
+          <div class="row"><strong>Nhà máy đóng tàu:</strong> {{ship.manufacture}}</div>
+        </div>
+        <div class="ship-info-text-left">
+          <div class="row"><strong>Tên tàu:</strong> {{ ship.name }}</div>
+          <div class="row"><strong>Hô hiệu:</strong> {{ ship.callSign }}</div>
+          <div class="row"><strong>Loại tàu:</strong> {{ ship.type }}</div>
+          <div class="row"><strong>Cảng chính:</strong> {{ ship.mainPort }}</div>
+          <div class="row"><strong>Chiều dài (m):</strong> {{ ship.length }}</div>
+          <div class="row"><strong>Tổng trọng tải (t):</strong> {{ ship.deadWeight }}</div>
+          <div class="row"><strong>Chủ tàu: </strong> {{ship.own}}</div>
+          <div class="row"><strong>Năm đóng:</strong> {{ ship.builderYear }}</div>
+        </div>
+      </div>
+    </div>
+
+  </mat-card>
+
+  <!-- Vị trí mới nhất -->
+  <mat-card class="latest-position-card">
+    <div class="header-detail-ship"><span>Vị trí mới nhất</span></div>
+    <div class="latest-position-body">
+      <div id="map" class="map-placeholder"></div>
+      <div class="position-info">
+        <p><strong>Kinh độ:</strong> {{ ship.lng }}°E</p>
+        <p><strong>Vĩ độ:</strong> {{ ship.lat }}°N</p>
+        <p><strong>Vận tốc (kn):</strong> {{ ship.speed }}</p>
+        <p><strong>Hướng (°):</strong> {{ ship.heading }}</p>
+        <p><strong>Mớn nước (m):</strong> {{ ship.waterDepth }}</p>
+        <p><strong>Trạng thái:</strong> {{ ship.status }}</p>
+        <p><strong>Loại dữ liệu AIS:</strong> {{ ship.aisType }}</p>
+        <p><strong>Thời gian:</strong> {{ ship.time }}</p>
+        <p><strong>Nguồn:</strong> {{ ship.source }}</p>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<!-- Lịch sử cập cảng -->
+<mat-card>
+  <mat-card-title>Lịch sử cập cảng</mat-card-title>
+  <mat-table [dataSource]="portHistories">
+    <!-- STT Column -->
+    <ng-container matColumnDef="stt">
+      <mat-header-cell *matHeaderCellDef> STT </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.stt }}</mat-cell>
+    </ng-container>
+
+    <!-- Cảng Column -->
+    <ng-container matColumnDef="port">
+      <mat-header-cell *matHeaderCellDef> Cảng </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.port }}</mat-cell>
+    </ng-container>
+
+    <!-- Quốc gia Column -->
+    <ng-container matColumnDef="country">
+      <mat-header-cell *matHeaderCellDef> Quốc gia </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.country }}</mat-cell>
+    </ng-container>
+
+    <!-- Thời gian đến Column -->
+    <ng-container matColumnDef="arrivalTime">
+      <mat-header-cell *matHeaderCellDef> Thời gian đến </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.arrivalTime }}</mat-cell>
+    </ng-container>
+
+    <!-- Thời gian đi Column -->
+    <ng-container matColumnDef="departureTime">
+      <mat-header-cell *matHeaderCellDef> Thời gian đi </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.departureTime }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-card>

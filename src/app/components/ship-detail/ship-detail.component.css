@@ -1,0 +1,93 @@
+.header-detail-ship {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #eef;
+  font-weight: bold;
+}
+.ship-detail-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 10px;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.position-now{
+  text-size-adjust: 14px;
+  font-weight: bold;
+}
+.ship-detail-container .ship-info-card{
+  flex:2;
+  border: 2px dotted #eef;
+}
+.ship-detail-container .latest-position-card {
+
+  flex:1;
+}
+
+.ship-detail-container .ship-info-body {
+  display: flex;
+  margin-top: 8px;
+}
+
+.ship-detail-container .ship-info-body .ship-image img {
+  width: 200px;
+  height: 200px;
+  background-color: #eef;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ship-detail-container .ship-info-body .ship-info-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  padding-right: 50px;
+  flex:1;
+
+}
+.ship-detail-container .ship-info-body .ship-info-text .ship-info-text-left{
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+
+}
+
+
+
+
+.ship-detail-container .ship-actions {
+  margin-top:5px;
+  display: flex;
+  align-items: center;
+}
+
+.ship-detail-container .ship-actions button {
+  margin-right: 8px;
+}
+
+.ship-detail-container .latest-position-body {
+  display: flex;
+  flex: 1;
+  margin-top: 8px;
+}
+
+.ship-detail-container .latest-position-body .map-placeholder {
+  width: 100%;
+  height: 300px;
+  background-color: #eef;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex:1;
+}
+.ship-detail-container .latest-position-body .position-info{
+  flex:1
+}
+.ship-detail-container .latest-position-body .position-info p {
+  margin: 10px 5px;
+}

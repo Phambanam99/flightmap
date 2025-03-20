@@ -25,6 +25,7 @@
     "@bluehalo/ngx-leaflet": "^19.0.0",
     "@mui/icons-material": "^6.4.7",
     "leaflet": "^1.9.4",
+    "leaflet-rotatedmarker": "^0.2.0",
     "leaflet-velocity": "^2.1.4",
     "ngx-leaflet": "^0.0.16",
     "rxjs": "~7.8.0",

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Flight } from '../../models/flight.model';
+import { Flight } from '../../../models/flight.model';
 import { EventEmitter, Output } from '@angular/core';
 
 @Component({
@@ -44,12 +44,23 @@ import { EventEmitter, Output } from '@angular/core';
               </mat-list>
 
               <!-- Action Buttons -->
+              <!-- Action Buttons -->
               <div class="button-row">
-                <button mat-raised-button color="primary">Chi tiết</button>
-                <button mat-raised-button>Theo dõi</button>
-                <button mat-raised-button>Nhật ký</button>
-                <button mat-raised-button>Thông kê</button>
-                <button mat-raised-button color="accent">Lịch sử tàu</button>
+                <button mat-raised-button color="primary">
+                  <mat-icon>visibility</mat-icon>Chi tiết
+                </button>
+                <button mat-raised-button>
+                  <mat-icon>star</mat-icon>Theo dõi
+                </button>
+                <button mat-raised-button>
+                  <mat-icon>sticky_note_2</mat-icon>Nhật ký
+                </button>
+                <button mat-raised-button>
+                  <mat-icon class="mat-18">print</mat-icon>In
+                </button>
+                <button mat-raised-button color="accent">
+                  <mat-icon>history</mat-icon>Lịch sử
+                </button>
               </div>
             </div>
           </mat-tab>
@@ -78,7 +89,7 @@ import { EventEmitter, Output } from '@angular/core';
       </mat-card>
     </div>
   `,
-  styleUrl: './flight-detail.component.css',
+  styleUrl: './flight-popup.component.css',
 })
 export class FlightDetailComponent {
   @Input() item: Flight = {
