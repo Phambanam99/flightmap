@@ -10,7 +10,7 @@ let flights = [];
 
 // Generate initial mock data
 function generateData() {
-  for (let i = 0; i < 50000; i++) {
+  for (let i = 0; i < 100000; i++) {
     vessels.push({
       id: `v${i + 1}`,
       name: `Vessel ${i + 1}`,
@@ -81,13 +81,36 @@ function updatePositions() {
 // Initialize data
 generateData();
 
+const CHUNK_SIZE = 1000; // Số lượng item trong mỗi chunk
+
 // Send updates every second
 setInterval(() => {
   updatePositions();
-  const data = { vessels, flights };
+
+  // Gửi dữ liệu theo chunks
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(data));
+      // Gửi vessels theo chunks
+      for(let i = 0; i < vessels.length; i += CHUNK_SIZE) {
+        const chunk = vessels.slice(i, i + CHUNK_SIZE);
+        client.send(JSON.stringify({
+          type: 'vessels_chunk',
+          data: chunk,
+          total: vessels.length,
+          offset: i
+        }));
+      }
+
+      // Gửi flights theo chunks
+      for(let i = 0; i < flights.length; i += CHUNK_SIZE) {
+        const chunk = flights.slice(i, i + CHUNK_SIZE);
+        client.send(JSON.stringify({
+          type: 'flights_chunk',
+          data: chunk,
+          total: flights.length,
+          offset: i
+        }));
+      }
     }
   });
 }, 1000);

@@ -82,7 +82,7 @@ export class MapComponent implements OnInit {
         attribution: '&copy; OpenStreetMap contributors',
       }),
     ],
-    minZoom: 6, // Adjusted min zoom level for better view of Vietnam
+    minZoom: 1, // Adjusted min zoom level for better view of Vietnam
     maxZoom: 18, // Adjusted max zoom level for better view of Vietnam
     zoom: 6, // Adjusted zoom level for better view of Vietnam
     center: latLng(16.0, 106.0),
@@ -121,19 +121,33 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.wsService.getData().subscribe((data) => {
-      if (this.filter === 'vessels') {
-        this.updateVesselLayers(data.vessels);
-      } else if (this.filter === 'flights') {
-        this.updateFlightLayers(data.flights);
+      // Chỉ cập nhật các markers trong viewport hiện tại
+      if (this.map) {
+        const bounds = this.map.getBounds();
+        if (this.filter === 'vessels') {
+          const visibleVessels = data.vessels.filter((v) =>
+            bounds.contains([v.position.lat, v.position.lng])
+          );
+          this.updateVesselLayers(visibleVessels);
+        } else if (this.filter === 'flights') {
+          const visibleFlights = data.flights.filter((f) =>
+            bounds.contains([f.position.lat, f.position.lng])
+          );
+          this.updateFlightLayers(visibleFlights);
+        }
       }
-      // Add similar methods for airports and clouds if needed
     });
 
     this.mapSearchService.showSearchPanel$.subscribe((show) => {
       console.log('Search panel visibility changed:', show);
       this.showSearchPanel = show;
     });
-       this.addDrawingTools();
+    // this.addDrawingTools();
+    L.control
+      .zoom({
+        position: 'topright',
+      })
+      .addTo(this.map);
   }
 
   getIconSize(zoom: number) {
@@ -211,29 +225,26 @@ export class MapComponent implements OnInit {
   }
 
   updateVesselLayers(vessels: Vessel[]) {
-    this.vesselMarkers.clear();
-    const currentZoom = this.options.zoom;
-    const iconSize = this.getIconSize(currentZoom);
+    requestAnimationFrame(() => {
+      // Clear existing markers
+      this.vesselMarkerCluster.clearLayers();
 
-    vessels.forEach((v) => {
-      const vesselWithType = { ...v, type: 'Vessel' };
-      const m = marker([v.position.lat, v.position.lng], {
-        icon: icon({
-          iconSize: [iconSize, iconSize * 1.5],
-          iconAnchor: [iconSize / 2, iconSize * 1.5],
-          iconUrl: 'assets/vessel.png',
-        }),
-      }).on('click', () => {
-        this.selectedItem = vesselWithType;
-        if (m) {
-          this.selectedMarker = m;
-          this.createPopupContentVessel(vesselWithType);
-        }
+      // Add new markers in batch
+      const markers = vessels.map((v) => {
+        const iconSize = this.getIconSize(this.currentZoom);
+        const marker = L.marker([v.position.lat, v.position.lng], {
+          icon: L.icon({
+            iconUrl: 'assets/vessel.png',
+            iconSize: [iconSize, iconSize * 1.5],
+            iconAnchor: [iconSize / 2, iconSize * 1.5],
+          }),
+        });
+        // ...marker configuration...
+        return marker;
       });
-      this.vesselMarkers.set(v.id, m);
-    });
 
-    this.updateVisibleMarkers();
+      this.vesselMarkerCluster.addLayers(markers);
+    });
   }
 
   updateFlightLayers(flights: Flight[]) {

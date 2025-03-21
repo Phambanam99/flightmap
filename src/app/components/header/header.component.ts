@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
           </li>
           <li>
             <mat-icon>directions_boat</mat-icon>
-            <a href="#">Thông tin tàu</a>
+            <a href="#">Quản lý tàu</a>
             <ul class="dropdown"></ul>
           </li>
           <li>
@@ -34,7 +34,7 @@ import { Router } from '@angular/router';
             <a href="#">Quản lý hàng không</a>
           </li>
           <li>
-            <a href="#">Quản lý chung</a>
+            <a href="#">Ảnh vệ tinh</a>
           </li>
           <li><span (click)="goToAbout()">Về sản phẩm</span></li>
         </ul>
@@ -59,10 +59,7 @@ import { Router } from '@angular/router';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  constructor(
-    private router: Router
-  ) {}
-
+  constructor(private router: Router) {}
 
   goToAbout() {
     this.router.navigate(['about']);
