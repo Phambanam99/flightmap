@@ -63,9 +63,19 @@
 
   <!-- Vị trí mới nhất -->
   <mat-card class="latest-position-card">
-    <div class="header-detail-ship"><span>Vị trí mới nhất</span></div>
+    <div class="header-detail-ship">
+      <span>Vị trí mới nhất</span>
+      <div class="latest-position-card-actions">
+        <button mat-button><mat-icon>info</mat-icon>Xem trên bản đồ</button>
+        <button mat-button><mat-icon>history</mat-icon>Lịch sử tàu</button>
+      </div>
+    </div>
     <div class="latest-position-body">
-      <div id="map" class="map-placeholder"></div>
+      <div id="map" class="map-placeholder">
+        <button mat-mini-fab color="primary" class="locate-button" (click)="locateMe()">
+          <mat-icon>my_location</mat-icon>
+        </button>
+      </div>
       <div class="position-info">
         <p><strong>Kinh độ:</strong> {{ ship.lng }}°E</p>
         <p><strong>Vĩ độ:</strong> {{ ship.lat }}°N</p>

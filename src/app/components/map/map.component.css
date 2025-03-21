@@ -1,13 +1,13 @@
 :host {
   display: block;
-  height: auto;
+  height: 100%;
   width: 100%;
   position: absolute;
   left: 0;
 }
 .map-container {
   position: relative;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -55,4 +55,14 @@
 
 .expend-search-button:hover {
   background-color: #1565c0;
+}
+
+.custom-cluster-icon {
+  background: transparent;
+  border: none;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 40px;
 }

@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'test', component: MapSearchComponent },
   { path: 'about', component: AboutComponent },
   { path: 'vessels/detail', component: ShipDetailComponent },
-  { path: '', component: MapComponent },
+  { path: '', component: VesselComponent },
   { path: '**', redirectTo: '' },
 ];
 

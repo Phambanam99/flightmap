@@ -26,7 +26,7 @@ export class ShipDetailComponent implements AfterViewInit {
     mmsi: '368887000',
     name: 'USNS CITY OF BISMARCK (T-EPF-9)',
     diffName: '',
-    imageUrl: 'https://example.com/ship.jpg',
+    imageUrl: '',
     callSign: 'NBMK',
     imo: '9677571',
     country: 'USA',
@@ -149,5 +149,24 @@ export class ShipDetailComponent implements AfterViewInit {
     const newSize = baseSize * scaleFactor;
 
     return Math.min(Math.max(newSize, minSize), maxSize);
+  }
+
+  locateMe() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          console.log(`Current position: ${lat}, ${lng}`);
+          this.map.setView([lat, lng], 13);
+        },
+        (error) => {
+          console.error('Error getting location', error);
+          alert('Error getting location: ' + error.message);
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by this browser.');
+    }
   }
 }

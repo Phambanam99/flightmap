@@ -27,6 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './components/about/about.component';
 import { ShipDetailComponent } from './components/ship-detail/ship-detail.component';
 import { MatTableModule } from '@angular/material/table';
+import 'leaflet.markercluster';
+
 @NgModule({
   declarations: [
     MapComponent,

@@ -9,10 +9,12 @@ import { Router } from '@angular/router';
     <div [ngStyle]="{ display: showMap ? 'block' : 'none' }">
       <app-map></app-map>
     </div>
+
     <router-outlet></router-outlet>
   `,
   standalone: false,
-  styleUrl: 'app.component.css',
+  styleUrls: ['app.component.css'],
+  host: { class: 'app-root' },
 })
 export class AppComponent {
   showMap = true;

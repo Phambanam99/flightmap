@@ -22,9 +22,13 @@ import { VesselPopupComponent } from '../share/vessel-popup/vessel-popup.compone
 import { FlightDetailComponent } from '../share/flight-popup/flight-popup.component';
 import { min } from 'rxjs';
 import { MapSearchService } from '../../services/map-search.service';
-import * as L from 'leaflet';
 import { WeatherDataService } from '../../services/weather.service';
 import 'leaflet-velocity';
+import 'leaflet.markercluster';
+import 'leaflet-draw';
+import 'leaflet-draw/dist/leaflet.draw.css';
+import * as L from 'leaflet';
+import 'leaflet-draw';
 import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
@@ -51,6 +55,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
         [leafletLayers]="layers"
         (leafletMapReady)="onMapReady($event)"
         (leafletZoomend)="onZoomEnd($event)"
+        (leafletMoveend)="onMoveEnd($event)"
       ></div>
     </div>
   `,
@@ -68,7 +73,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
   ],
 })
 export class MapComponent implements OnInit {
-  // @Input() filter: 'vessels' | 'flights' | null = null;
+  @Input() filter: 'vessels' | 'flights' | null = null;
   showSearchPanel = false;
   unitspeedvalue: string = 'm/s';
   options = {
@@ -77,7 +82,7 @@ export class MapComponent implements OnInit {
         attribution: '&copy; OpenStreetMap contributors',
       }),
     ],
-    minZoom: 3, // Adjusted min zoom level for better view of Vietnam
+    minZoom: 6, // Adjusted min zoom level for better view of Vietnam
     maxZoom: 18, // Adjusted max zoom level for better view of Vietnam
     zoom: 6, // Adjusted zoom level for better view of Vietnam
     center: latLng(16.0, 106.0),
@@ -99,7 +104,13 @@ export class MapComponent implements OnInit {
 
   showWeather = false;
   selectedWeatherLayer = 'none';
-  private weatherLayer: L.TileLayer | null = null;
+  private vesselMarkerCluster = L.markerClusterGroup({
+    iconCreateFunction: this.createClusterIcon.bind(this),
+  });
+  private flightMarkerCluster = L.markerClusterGroup({
+    iconCreateFunction: this.createClusterIcon.bind(this),
+  });
+  private weatherLayer: any;
 
   constructor(
     private wsService: WebSocketService,
@@ -110,8 +121,11 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.wsService.getData().subscribe((data) => {
-      this.updateVesselLayers(data.vessels);
-      this.updateFlightLayers(data.flights);
+      if (this.filter === 'vessels') {
+        this.updateVesselLayers(data.vessels);
+      } else if (this.filter === 'flights') {
+        this.updateFlightLayers(data.flights);
+      }
       // Add similar methods for airports and clouds if needed
     });
 
@@ -119,6 +133,7 @@ export class MapComponent implements OnInit {
       console.log('Search panel visibility changed:', show);
       this.showSearchPanel = show;
     });
+       this.addDrawingTools();
   }
 
   getIconSize(zoom: number) {
@@ -138,6 +153,10 @@ export class MapComponent implements OnInit {
   onZoomEnd(event: any) {
     this.currentZoom = event.target.getZoom();
     this.updateAllMarkers();
+  }
+
+  onMoveEnd(event: any) {
+    this.updateVisibleMarkers();
   }
 
   updateAllMarkers() {
@@ -166,70 +185,105 @@ export class MapComponent implements OnInit {
     });
   }
 
+  updateVisibleMarkers() {
+    const bounds = this.map.getBounds();
+    const currentZoom = this.map.getZoom();
+    const iconSize = this.getIconSize(currentZoom);
+
+    this.vesselMarkerCluster.clearLayers();
+    this.flightMarkerCluster.clearLayers();
+
+    if (this.filter === 'vessels') {
+      this.vesselMarkers.forEach((m) => {
+        if (bounds.contains(m.getLatLng())) {
+          this.vesselMarkerCluster.addLayer(m);
+        }
+      });
+      this.map.addLayer(this.vesselMarkerCluster);
+    } else if (this.filter === 'flights') {
+      this.flightMarkers.forEach((m) => {
+        if (bounds.contains(m.getLatLng())) {
+          this.flightMarkerCluster.addLayer(m);
+        }
+      });
+      this.map.addLayer(this.flightMarkerCluster);
+    }
+  }
+
   updateVesselLayers(vessels: Vessel[]) {
-    const newLayers: any[] = [];
+    this.vesselMarkers.clear();
     const currentZoom = this.options.zoom;
     const iconSize = this.getIconSize(currentZoom);
 
     vessels.forEach((v) => {
-      let m = this.vesselMarkers.get(v.id);
-      if (m) {
-        m.setLatLng([v.position.lat, v.position.lng]);
-      } else {
-        const vesselWithType = { ...v, type: 'Vessel' };
-        m = marker([v.position.lat, v.position.lng], {
-          icon: icon({
-            iconSize: [iconSize, iconSize * 1.5],
-            iconAnchor: [iconSize / 2, iconSize * 1.5],
-            iconUrl: 'assets/vessel.png',
-          }),
-        }).on('click', () => {
-          this.selectedItem = vesselWithType;
-          if (m) {
-            this.selectedMarker = m;
-            this.createPopupContentVessel(vesselWithType);
-          }
-        });
-        this.vesselMarkers.set(v.id, m);
-      }
-      newLayers.push(m);
+      const vesselWithType = { ...v, type: 'Vessel' };
+      const m = marker([v.position.lat, v.position.lng], {
+        icon: icon({
+          iconSize: [iconSize, iconSize * 1.5],
+          iconAnchor: [iconSize / 2, iconSize * 1.5],
+          iconUrl: 'assets/vessel.png',
+        }),
+      }).on('click', () => {
+        this.selectedItem = vesselWithType;
+        if (m) {
+          this.selectedMarker = m;
+          this.createPopupContentVessel(vesselWithType);
+        }
+      });
+      this.vesselMarkers.set(v.id, m);
     });
 
-    this.vesselLayers = newLayers;
-    this.updateLayers();
+    this.updateVisibleMarkers();
   }
 
   updateFlightLayers(flights: Flight[]) {
-    const newLayers: any[] = [];
+    this.flightMarkers.clear();
     const currentZoom = this.options.zoom;
     const iconSize = this.getIconSize(currentZoom);
 
     flights.forEach((f) => {
-      let m = this.flightMarkers.get(f.id);
-      if (m) {
-        m.setLatLng([f.position.lat, f.position.lng]);
-      } else {
-        const flightWithType = { ...f, type: 'Flight' };
-        m = marker([f.position.lat, f.position.lng], {
-          icon: icon({
-            iconSize: [iconSize, iconSize * 1.5],
-            iconAnchor: [iconSize / 2, iconSize * 1.5],
-            iconUrl: './assets/flight.png',
-          }),
-        }).on('click', () => {
-          this.selectedItem = flightWithType;
-          if (m) {
-            this.selectedMarker = m;
-            this.createPopupContentFlight(flightWithType);
-          }
-        });
-        this.flightMarkers.set(f.id, m);
-      }
-      newLayers.push(m);
+      const flightWithType = { ...f, type: 'Flight' };
+      const m = marker([f.position.lat, f.position.lng], {
+        icon: icon({
+          iconSize: [iconSize, iconSize * 1.5],
+          iconAnchor: [iconSize / 2, iconSize * 1.5],
+          iconUrl: './assets/flight.png',
+        }),
+      }).on('click', () => {
+        this.selectedItem = flightWithType;
+        if (m) {
+          this.selectedMarker = m;
+          this.createPopupContentFlight(flightWithType);
+        }
+      });
+      this.flightMarkers.set(f.id, m);
     });
 
-    this.flightLayers = newLayers;
-    this.updateLayers();
+    this.updateVisibleMarkers();
+  }
+
+  createClusterIcon(cluster: any) {
+    const childMarkers = cluster.getAllChildMarkers();
+    let vesselCount = 0;
+    let flightCount = 0;
+
+    childMarkers.forEach((marker: any) => {
+      if (marker.options.icon.options.iconUrl.includes('vessel')) {
+        vesselCount++;
+      } else if (marker.options.icon.options.iconUrl.includes('flight')) {
+        flightCount++;
+      }
+    });
+
+    const iconUrl =
+      vesselCount > flightCount ? 'assets/vessel.png' : 'assets/flight.png';
+
+    return L.divIcon({
+      // html: `<img src="${iconUrl}" style="width: 40px; height: 40px;"><span>${cluster.getChildCount()}</span>`,
+      html: `<img src="${iconUrl}" style="width: 40px; height: 40px;"><span></span>`,
+      className: 'custom-cluster-icon',
+      iconSize: L.point(40, 40, true),
+    });
   }
 
   updateLayers() {
@@ -260,6 +314,7 @@ export class MapComponent implements OnInit {
 
   onMapReady(map: L.Map) {
     this.map = map;
+    this.updateVisibleMarkers();
   }
 
   toggleWeather() {
@@ -344,5 +399,37 @@ export class MapComponent implements OnInit {
   toggleMapSearch() {
     this.mapSearchService.toggleSearchPanel();
     console.log('Toggle map search');
+  }
+  private addDrawingTools(): void {
+    // Cấu hình tùy chọn cho các công cụ vẽ
+    const drawControl = new (L.Control as any).Draw({
+      draw: {
+        polyline: false, // Tắt vẽ đường kẻ
+        polygon: false, // Tắt vẽ đa giác (nếu không cần)
+        circle: true, // Bật vẽ hình tròn
+        rectangle: true, // Bật vẽ hình chữ nhật
+        marker: false, // Tắt vẽ marker
+        circlemarker: false, // Tắt vẽ circlemarker
+      },
+      edit: {
+        featureGroup: new L.FeatureGroup(), // Tập hợp các layer sẽ được chỉnh sửa
+        remove: true,
+      },
+    });
+    this.map.addControl(drawControl);
+
+    // Nếu bạn muốn lưu lại các layer vẽ được để xử lý sau này
+    const drawnItems = new L.FeatureGroup();
+    this.map.addLayer(drawnItems);
+
+    // Lắng nghe sự kiện vẽ xong
+    this.map.on((L.Control as any).Draw.Event.CREATED, (event: any) => {
+      const layer = event.layer;
+      drawnItems.addLayer(layer);
+
+      // Lấy thông tin hình vẽ được vẽ
+      console.log('Đã vẽ:', layer.toGeoJSON());
+      // Bạn có thể xử lý thêm, ví dụ lưu thông tin vào cơ sở dữ liệu hoặc hiển thị popup, ...
+    });
   }
 }
