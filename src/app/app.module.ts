@@ -27,8 +27,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './components/about/about.component';
 import { ShipDetailComponent } from './components/ship-detail/ship-detail.component';
 import { MatTableModule } from '@angular/material/table';
+import { BaseChartDirective } from 'ng2-charts';
+import { MatChipsModule } from '@angular/material/chips'
+import { MatToolbarModule } from '@angular/material/toolbar'
 import 'leaflet.markercluster';
-
+import { StatisticComponent } from './components/statistic/statistic.component';
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     MapComponent,
@@ -43,6 +47,7 @@ import 'leaflet.markercluster';
     MultiSelectDropdownComponent,
     AboutComponent,
     ShipDetailComponent,
+    StatisticComponent,
   ],
   imports: [
     CommonModule,
@@ -54,6 +59,9 @@ import 'leaflet.markercluster';
     MatTabsModule,
     MatCardModule,
     MatIconModule,
+    MatToolbarModule,
+    MatChipsModule,
+    MatTableModule,
     MatListModule,
     MatButtonModule,
     MatTableModule,
@@ -62,6 +70,7 @@ import 'leaflet.markercluster';
     MatFormFieldModule,
     MatRadioModule,
     HttpClientModule,
+    NgChartsModule
   ],
   bootstrap: [AppComponent],
   providers: [],

@@ -1,0 +1,37 @@
+.dashboard {
+  padding: 20px;
+}
+
+.mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.statistics-cards {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-card {
+  width: 45%;
+}
+
+mat-card-header {
+  background-color: #3f51b5;
+  color: white;
+}
+
+mat-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+mat-card-content {
+  display: flex;
+  align-items: center;
+}
+canvas {
+  display: block;
+  width: 100% !important;   /* Đảm bảo canvas chiếm hết không gian */
+  height: 100% !important;  /* Đặt chiều cao cố định hoặc có thể thay đổi theo nhu cầu */
+}

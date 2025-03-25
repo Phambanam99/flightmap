@@ -74,7 +74,7 @@
   padding: 0.5rem 0;
   border-radius: 4px;
   z-index: 999;
-} */ 
+} */
 
 /* Dropdown items */
 .dropdown li {
@@ -157,7 +157,9 @@
 .more-menu-button mat-icon:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-
+.expend-search-button{
+  cursor: pointer;
+}
 /* Mobile dropdown styles
 .mobile-dropdown {
   opacity: 0;
@@ -214,7 +216,7 @@
     display: flex;
     align-items: center;
   }
-/* 
+/*
   .mobile-dropdown {
     display: none;
     position: absolute;

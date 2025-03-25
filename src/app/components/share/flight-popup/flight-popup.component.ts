@@ -126,4 +126,5 @@ export class FlightDetailComponent {
   onClose() {
     this.close.emit();
   }
+  
 }

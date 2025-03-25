@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Vessel } from '../../../models/vessel.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vessel-detail',
@@ -94,7 +95,7 @@ import { Vessel } from '../../../models/vessel.model';
 
               <!-- Action Buttons -->
               <div class="button-row">
-                <button mat-raised-button color="primary">
+                <button mat-raised-button (click)="goToDetail()" color="primary">
                   <mat-icon>visibility</mat-icon>Chi tiết
                 </button>
                 <button mat-raised-button>
@@ -140,6 +141,10 @@ import { Vessel } from '../../../models/vessel.model';
   styleUrl: './vessel-popup.component.css',
 })
 export class VesselPopupComponent {
+
+  constructor(private router: Router) {
+
+  }
   @Input() item: Vessel = {
     id: '',
     name: '',
@@ -186,5 +191,8 @@ export class VesselPopupComponent {
 
   onClose() {
     this.close.emit();
+  }
+  goToDetail() {
+    this.router.navigate(['vessels/detail']);
   }
 }

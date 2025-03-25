@@ -6,6 +6,7 @@ import { MapSearchComponent } from './components/share/map-search/map-search.com
 import { AboutComponent } from './components/about/about.component';
 import { MapComponent } from './components/map/map.component';
 import { ShipDetailComponent } from './components/ship-detail/ship-detail.component';
+import { StatisticComponent } from './components/statistic/statistic.component';
 
 const routes: Routes = [
   { path: 'vessels', component: VesselComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'vessels/detail', component: ShipDetailComponent },
   { path: '', component: VesselComponent },
+  {path:'statistic', component: StatisticComponent},
   { path: '**', redirectTo: '' },
 ];
 

@@ -41,13 +41,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
         *ngIf="showSearchPanel"
         [@slideInOut]
       ></app-map-search>
-      <div
-        class="expend-search-button"
-        (click)="toggleMapSearch()"
-        *ngIf="!showSearchPanel"
-      >
-        <mat-icon>menu</mat-icon>
-      </div>
+    
       <div
         class="map"
         leaflet

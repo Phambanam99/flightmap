@@ -1,0 +1,51 @@
+<div class="dashboard">
+  <!-- Filter bar -->
+  <mat-toolbar color="primary">
+    <mat-select placeholder="Aircraft" [(value)]="selectedAircraft">
+      <mat-option *ngFor="let aircraft of aircraftList" [value]="aircraft">{{ aircraft }}</mat-option>
+    </mat-select>
+    <mat-select placeholder="Airline" [(value)]="selectedAirline">
+      <mat-option *ngFor="let airline of airlineList" [value]="airline">{{ airline }}</mat-option>
+    </mat-select>
+    <mat-select placeholder="Airport" [(value)]="selectedAirport">
+      <mat-option *ngFor="let airport of airportList" [value]="airport">{{ airport }}</mat-option>
+    </mat-select>
+    <mat-select placeholder="Route" [(value)]="selectedRoute">
+      <mat-option *ngFor="let route of routeList" [value]="route">{{ route }}</mat-option>
+    </mat-select>
+    <button (click)="applyFilters()">Apply Filters</button>
+  </mat-toolbar>
+
+  <!-- Statistics section -->
+  <div class="statistics-cards">
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-card-title>Top 10 Most Common Aircraft Type</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Biểu đồ Pie Chart cho Aircraft Types -->
+        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
+          [type]="pieChartType"> <!-- Sử dụng thuộc tính type thay vì chartType -->
+        </canvas>
+      </mat-card-content>
+      <mat-card-footer>
+        <button>See full statistics</button>
+      </mat-card-footer>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-card-title>Top 10 Most Common Airline</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Biểu đồ Pie Chart cho Airline Types -->
+        <canvas baseChart [data]="airlineChartData" [labels]="airlineChartLabels" [options]="airlineChartOptions"
+          [type]="airlineChartType"> <!-- Sử dụng thuộc tính type thay vì chartType -->
+        </canvas>
+      </mat-card-content>
+      <mat-card-footer>
+        <button>See full statistics</button>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>

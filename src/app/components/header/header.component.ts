@@ -10,6 +10,12 @@ import { Router } from '@angular/router';
       <nav class="main-nav">
         <ul>
           <!-- <li (click)="toggleMapSearch()"> -->
+              <li
+        class="expend-search-button"
+        (click)="toggleMapSearch()"
+      >
+        <mat-icon>menu</mat-icon>
+      </li>
           <li>
             <mat-icon>map</mat-icon>
             <a routerLink="/" routerLinkActive="active">Bản đồ</a>
@@ -60,11 +66,16 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   constructor(
-    private router: Router
+    private router: Router,
+    private mapSearchService: MapSearchService
   ) {}
 
 
   goToAbout() {
     this.router.navigate(['about']);
+  }
+  toggleMapSearch() {
+    this.mapSearchService.toggleSearchPanel();
+    console.log('Toggle map search');
   }
 }
